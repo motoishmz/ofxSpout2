@@ -27,7 +27,9 @@ void Sender::sendTexture(ofTexture& t, string name)
         char senderNameChars[256];
         strcpy_s(senderNameChars, name.c_str());
         SpoutSender* sender = new SpoutSender();
+
         bool init = sender->CreateSender(senderNameChars, width, height);
+
         if (init) {
             buildFBO = true;
             spoutSenderList.push_back(sender);
@@ -91,8 +93,14 @@ void Sender::sendTexture(ofTexture& t, string name)
 		ofPopStyle();
 		ofPopMatrix();
 		glBindTexture(GL_TEXTURE_2D, 0);  //
-		spoutSenderList[i]->SendTexture(senderFboList[i].getTextureReference().getTextureData().textureID, GL_TEXTURE_2D, senderWidthList[i], senderHeightList[i], false); 
+		spoutSenderList[i]->SendTexture(senderFboList[i].getTextureReference().getTextureData().textureID, GL_TEXTURE_2D, senderWidthList[i], senderHeightList[i], FlipOutput); 
 	}
+}
+
+void Sender::sendTexture(ofTexture& t, string senderName, bool FlipOutputImage)
+{
+	FlipOutput = FlipOutputImage;
+	sendTexture(t, senderName);
 }
 
 //--------------------------------------------------------------
